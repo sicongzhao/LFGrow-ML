@@ -954,7 +954,7 @@ export default {
     use.load().then(model => {
       // Embed an array of sentences.
       const sentences = [
-        'Hello.',
+        'Hello nice to meet you.',
         'How are you?'
       ];
       model.embed(sentences).then(embeddings => {

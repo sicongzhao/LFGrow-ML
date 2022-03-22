@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    
+    {{posts}}
   </div>
 </template>
 
@@ -9,7 +9,10 @@ import { gql } from '@apollo/client/core';
 import { apolloClient } from '../graph/apollo-client';
 // import { prettyJSON } from '../graph/helpers';
 require('@tensorflow/tfjs');
-const use = require('@tensorflow-models/universal-sentence-encoder');
+import * as tf from '@tensorflow/tfjs';
+// const use = require('@tensorflow-models/universal-sentence-encoder');
+const toxicity = require('@tensorflow-models/toxicity');
+
 
 const GET_PUBLICATIONS = `
   query($request: PublicationsQueryRequest!) {
@@ -912,8 +915,16 @@ const GET_PUBLICATIONS_2 = `
 
 export default {
   name: 'HelloWorld',
+  computed: {
+    posts () {
+      return this.$store.getters.posts
+    }
+  },
   methods: {
-    getPublicationsRequest (getPublicationQuery) {
+    async updatePosts(posts) {
+      await this.$store.dispatch("updatePosts", posts);
+    },
+    async getPublicationsRequest (getPublicationQuery) {
       return apolloClient.query({
         query: gql(GET_PUBLICATIONS),
         variables: {
@@ -921,8 +932,7 @@ export default {
         },
       })
     },
-    
-    explorePublications (explorePublicationQueryRequest) {
+    async explorePublications (explorePublicationQueryRequest) {
       return apolloClient.query({
         query: gql(EXPLORE_PUBLICATIONS),
         variables: {
@@ -930,8 +940,7 @@ export default {
         },
       })
     },
-
-    getPublicationsRequest2 (getPublicationQuery) {
+    async getPublicationsRequest2 (getPublicationQuery) {
       return apolloClient.query({
         query: gql(GET_PUBLICATIONS_2),
         variables: {
@@ -939,9 +948,39 @@ export default {
         },
       })
     },
-
+    parsePosts(posts){
+      let postCtt = []
+      posts.forEach((element) => {
+        if(element.__typename == 'Post') {
+          postCtt.push(element.metadata.content)
+        }
+      })
+      return postCtt
+    },
+    detectMalicious(sentences){
+      const threshold = 0.9;
+      toxicity.load(threshold).then(model => {
+        model.classify(sentences).then(predictions => {
+          console.log(predictions);
+        });
+      });
+    }
   },
   mounted () {
+    // Tensorflow.js Playground
+    const a = tf.tensor([1,2,3,4])
+    // const d = tf.tensor([2,3,4,5])
+    a.print()
+    // console.log(a.shape)
+    // const b = a.reshape([2,2])
+    // b.print()
+    // b.array().then(function(data){
+    //   console.log(data)
+    //   return data
+    // })
+    // const c = tf.losses.cosineDistance(d, d)
+    // c.print()
+
     // console.log(use.loadTokenizer())
     // const r = use.loadTokenizer().then(tokenizer => {
     //   tokenizer.encode('Hello, how are you?'); // [341, 4125, 8, 140, 31, 19, 54]
@@ -951,23 +990,22 @@ export default {
     //   console.log(result)
     // })
 
-    use.load().then(model => {
-      // Embed an array of sentences.
-      const sentences = [
-        'Hello nice to meet you.',
-        'How are you?'
-      ];
-      model.embed(sentences).then(embeddings => {
-        // `embeddings` is a 2D tensor consisting of the 512-dimensional embeddings for each sentence.
-        // So in this example `embeddings` has the shape [2, 512].
-        embeddings.print(true /* verbose */);
-        console.log(Object.getOwnPropertyNames(embeddings));
-        // console.log(embeddings.arraySync())
-        const a = embeddings.arraySync()
-        console.log(a)
-        
-      });
-    });
+    // // Sentence Encoder
+    // use.load().then(model => {
+    //   // Embed an array of sentences.
+    //   const sentences = [
+    //     'Hello nice to meet you.',
+    //     'How are you?'
+    //   ];
+    //   model.embed(sentences).then(embeddings => {
+    //     // `embeddings` is a 2D tensor consisting of the 512-dimensional embeddings for each sentence.
+    //     // So in this example `embeddings` has the shape [2, 512].
+    //     embeddings.print(true /* verbose */);
+    //     // console.log(embeddings.arraySync())
+    //     const a = embeddings.arraySync()
+    //     console.log(a)
+    //   });
+    // });
 
     // const res = this.getPublicationsRequest({
     //   profileId: '0x032f1a',
@@ -984,15 +1022,23 @@ export default {
     // res2.then(function(result){
     //   console.log(result)
     // })
-
-    // const res3 = this.getPublicationsRequest2({
-    //   profileId: "0x49",
-    //   publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
-    //   limit: 13 // cannot exceed the maximum limit
-    // })
-    // res3.then(function(result){
-    //   console.log(result)
-    // })
+    const that = this
+    const res3 = this.getPublicationsRequest2({
+      profileId: "0x53",
+      publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
+      limit: 13 // cannot exceed the maximum limit
+    })
+    res3.then(function(result){
+      // console.log(result.data.publications.items)
+      const posts = result.data.publications.items
+      // console.log(posts)
+      that.updatePosts(posts)
+      const postCtt = that.parsePosts(that.posts)
+      console.log(postCtt)
+      that.detectMalicious(postCtt)
+    })
+    
+    
   }
 
 }

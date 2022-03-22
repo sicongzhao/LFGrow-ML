@@ -3,22 +3,30 @@ import { createStore } from "vuex"
 
 const store = createStore({
   state:{
-    account: null,
-    error: null
+    account: 1,
+    error: null,
+    posts: null,
   },
   getters: {
     account: (state) => state.account,
-    error: (state) => state.error
+    error: (state) => state.error,
+    posts: (state) => state.posts
   },
   mutations: {
     setAccount(state, account) {
-       state.account = account
+        state.account = account
     },
     setError(state, error) {
-       state.error = error
+        state.error = error
+    },
+    setPosts(state, posts) {
+        state.posts = posts
     }
   },
   actions: {
+    async updatePosts({commit}, posts) {
+        commit('setPosts', posts)
+    },
     async connect({commit, dispatch}, connect) {
       try {
         /**

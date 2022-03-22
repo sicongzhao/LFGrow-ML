@@ -925,7 +925,6 @@ export default {
     filteredPosts () {
       return this.$store.getters.filteredPosts
     },
-
   },
   methods: {
     showPosts() {
@@ -1043,6 +1042,7 @@ export default {
     //   console.log(result)
     // })
     // const that = this
+    
     const res3 = this.getPublicationsRequest2({
       profileId: "0x53",
       publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
@@ -1051,17 +1051,7 @@ export default {
     res3.then(result=>this.updatePosts(result.data.publications.items))
 
 
-    // res3.then(function(result){
-    //   // console.log(result.data.publications.items)
-    //   const posts = result.data.publications.items
-    //   outerPosts = posts
-    //   // console.log(posts)
-    //   that.updatePosts(posts)
-    //   const postCtt = that.parsePosts(that.posts)
-    //   console.log(postCtt)
-    //   that.detectMalicious(postCtt)
-    // })
-    // this.removePosts()
+    
   }
 
 }

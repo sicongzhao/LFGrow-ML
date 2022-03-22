@@ -1,6 +1,9 @@
 <template>
   <div class="hello">
-    {{posts}}
+    <!-- <button @click='showPosts'>Test Click</button> -->
+    <!-- <br /> -->
+    <!-- {{posts}} -->
+    HelloWorld
   </div>
 </template>
 
@@ -918,11 +921,21 @@ export default {
   computed: {
     posts () {
       return this.$store.getters.posts
-    }
+    },
+    filteredPosts () {
+      return this.$store.getters.filteredPosts
+    },
+
   },
   methods: {
+    showPosts() {
+      alert(this.posts)
+    },
     async updatePosts(posts) {
       await this.$store.dispatch("updatePosts", posts);
+    },
+    async updateFilteredPosts(posts) {
+      await this.$store.dispatch("updateFiltredPosts", posts);
     },
     async getPublicationsRequest (getPublicationQuery) {
       return apolloClient.query({
@@ -964,6 +977,13 @@ export default {
           console.log(predictions);
         });
       });
+    },
+    removePosts(postIds=[]) {
+      if (postIds.length == 0) {
+        this.updateFilteredPosts(this.posts)
+      } else {
+        console.log(66)
+      }
     }
   },
   mounted () {
@@ -1022,23 +1042,26 @@ export default {
     // res2.then(function(result){
     //   console.log(result)
     // })
-    const that = this
+    // const that = this
     const res3 = this.getPublicationsRequest2({
       profileId: "0x53",
       publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
       limit: 13 // cannot exceed the maximum limit
     })
-    res3.then(function(result){
-      // console.log(result.data.publications.items)
-      const posts = result.data.publications.items
-      // console.log(posts)
-      that.updatePosts(posts)
-      const postCtt = that.parsePosts(that.posts)
-      console.log(postCtt)
-      that.detectMalicious(postCtt)
-    })
-    
-    
+    res3.then(result=>this.updatePosts(result.data.publications.items))
+
+
+    // res3.then(function(result){
+    //   // console.log(result.data.publications.items)
+    //   const posts = result.data.publications.items
+    //   outerPosts = posts
+    //   // console.log(posts)
+    //   that.updatePosts(posts)
+    //   const postCtt = that.parsePosts(that.posts)
+    //   console.log(postCtt)
+    //   that.detectMalicious(postCtt)
+    // })
+    // this.removePosts()
   }
 
 }

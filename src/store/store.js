@@ -6,11 +6,13 @@ const store = createStore({
     account: 1,
     error: null,
     posts: null,
+    filteredPosts: null,
   },
   getters: {
     account: (state) => state.account,
     error: (state) => state.error,
-    posts: (state) => state.posts
+    posts: (state) => state.posts,
+    filteredPosts: (state) => state.filteredPosts
   },
   mutations: {
     setAccount(state, account) {
@@ -21,11 +23,18 @@ const store = createStore({
     },
     setPosts(state, posts) {
         state.posts = posts
+    },
+    setFilteredPosts(state, filteredPosts) {
+        state.filteredPosts = filteredPosts
     }
   },
   actions: {
     async updatePosts({commit}, posts) {
+        console.log(posts)
         commit('setPosts', posts)
+    },
+    async updateFiltredPosts({commit}, filteredPosts) {
+        commit('setFilteredPosts', filteredPosts)
     },
     async connect({commit, dispatch}, connect) {
       try {

@@ -22,14 +22,21 @@
         <Post />
     </div>
     <div class="max-w-lg min-w-fit w-96 flex-auto">
+        <div class="fixed max-w-lg min-w-fit w-96 flex-auto">
+            <div class="w-full sm:max-w-xs mt-3 mx-auto">
+                <label for="Search" class="sr-only">Search</label>
+                <input type="text" class="h-9 shadow-ct ring-0 border-0 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 block w-full sm:text-sm ring-gray-100 rounded-lg pl-3" placeholder="   Search" />
+            </div>
+            <div class="w-full flex-col flex items-center shadow-ct sm:max-w-xs mt-5 mx-auto h-96 py-3 bg-white rounded-lg">
+                <div class="w-11/12 h-10 bg-theme-color-1 rounded-lg">
+                    <div class="flex h-10">
+                        <div class="pl-2 flex-auto flex items-center font-bold">Toxicity Filter</div>
+                        <div>w</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        <div class="w-full sm:max-w-xs mt-16 mx-auto">
-          <label for="Search" class="sr-only">Search</label>
-          <input type="text" class="h-9 shadow-ct ring-0 border-0 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 block w-full sm:text-sm ring-gray-100 rounded-lg pl-3" placeholder="   Search" />
-        </div>
-        <div class="w-full sm:max-w-xs mt-6 mx-auto h-96 bg-white rounded-lg">
-            Models
-        </div>
     </div>
   </div>
 </template>

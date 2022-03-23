@@ -50,7 +50,7 @@
               </div>
             </div>
             <div class="break-words font-medium pr-10">{{post.metadata.content}}</div>
-            <div class="flex w-11/12 rounded-xl border-solid border border-gray-200 mt-3 p-2" v-if="post.__typename=='Comment'">
+            <div class="flex w-11/12 rounded-xl border-solid border-2 border-gray-50 bg-gray-50 mt-3 p-2" v-if="post.__typename=='Comment'">
               <div class="flex-none w-5 h-5 mr-2 mt-1 ml-1 mb-1">
                 <img :src="post.mainPost.profile.picture.original.url" alt="" class="w-5 h-5 rounded-full object-cover" @error="$event.target.src = defaultAvatar">
               </div>

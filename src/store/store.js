@@ -7,12 +7,14 @@ const store = createStore({
     error: null,
     posts: null,
     filteredPosts: null,
+    defaultAvatar: 'https://ipfs.infura.io/ipfs/Qma8mXoeorvPqodDazf7xqARoFD394s1njkze7q1X4CK8U'
   },
   getters: {
     account: (state) => state.account,
     error: (state) => state.error,
     posts: (state) => state.posts,
-    filteredPosts: (state) => state.filteredPosts
+    filteredPosts: (state) => state.filteredPosts,
+    defaultAvatar: (state) => state.defaultAvatar,
   },
   mutations: {
     setAccount(state, account) {

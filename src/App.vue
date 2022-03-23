@@ -1,7 +1,9 @@
 <template>
-  <HelloWorld />
-  <Feed />
-
+  <!-- <div class="bg-fixed bg-no-repeat bg-cover" style="background-image: url('https://images.unsplash.com/photo-1571115764595-644a1f56a55c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1041&q=80')"> -->
+  <div class="bg-gray-50">
+    <HelloWorld />
+    <Feed />
+  </div>
 </template>
 
 <script>

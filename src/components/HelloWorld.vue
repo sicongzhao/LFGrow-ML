@@ -1,9 +1,5 @@
 <template>
   <div class="hello">
-    <!-- <button @click='showPosts'>Test Click</button> -->
-    <!-- <br /> -->
-    <!-- {{posts}} -->
-    HelloWorld
   </div>
 </template>
 
@@ -1044,10 +1040,11 @@ export default {
     // const that = this
     
     const res3 = this.getPublicationsRequest2({
-      profileId: "0x53",
+      profileId: "0x13", // id that works: [53, 13, ]
       publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
-      limit: 13 // cannot exceed the maximum limit
+      limit: 50 // cannot exceed the maximum limit
     })
+    console.log(res3)
     res3.then(result=>this.updatePosts(result.data.publications.items))
 
 

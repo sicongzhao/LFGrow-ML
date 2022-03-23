@@ -1,0 +1,376 @@
+[
+    {
+        "__typename": "Comment",
+        "mainPost": {
+            "__typename": "Post",
+            "id": "0x53-0x03",
+            "profile": {
+                "__typename": "Profile",
+                "id": "0x53",
+                "name": "Alan",
+                "bio": "Cypherpunk | Engineer at Aave & Lens Protocol",
+                "location": "🇦🇷",
+                "website": "https://linktr.ee/donosonaumczuk",
+                "twitterUrl": "https://twitter.com/donosonaumczuk",
+                "handle": "donosonaumczuk",
+                "picture": {
+                    "__typename": "MediaSet",
+                    "original": {
+                        "__typename": "Media",
+                        "url": "https://lh3.googleusercontent.com/NMJCEoRpLRJFY7tCXwQ3GXh3br5jwxbB8yNYsuTG5Yai2mUJlMCAaQ5ffagXP1E11E9wDl_sH7wbUbhjyTXZGkJIy8GIWVmzVgQJ=w600",
+                        "mimeType": null
+                    }
+                },
+                "coverPicture": {
+                    "__typename": "MediaSet",
+                    "original": {
+                        "__typename": "Media",
+                        "url": "https://ipfs.infura.io/ipfs/QmTbaAyePnTrRLWrpWz2gtm7x7UneFTNGfSRby2b2Pnv38",
+                        "mimeType": null
+                    }
+                },
+                "ownedBy": "0x42a578e3557f5854B27D48E7d753fEb2f428546D",
+                "depatcher": null,
+                "stats": {
+                    "__typename": "ProfileStats",
+                    "totalFollowers": 3,
+                    "totalFollowing": 2,
+                    "totalPosts": 2,
+                    "totalComments": 1,
+                    "totalMirrors": 1,
+                    "totalPublications": 4,
+                    "totalCollects": 0
+                },
+                "followModule": null
+            },
+            "stats": {
+                "__typename": "PublicationStats",
+                "totalAmountOfMirrors": 1,
+                "totalAmountOfCollects": 0,
+                "totalAmountOfComments": 2
+            },
+            "metadata": {
+                "__typename": "MetadataOutput",
+                "name": "Post by @donosonaumczuk",
+                "description": "I can't believe how cool Lenster is",
+                "content": "I can't believe how cool Lenster is",
+                "media": [],
+                "attributes": []
+            },
+            "createdAt": "2022-03-19T23:29:50.000Z",
+            "collectModule": {
+                "__typename": "RevertCollectModuleSettings"
+            },
+            "referenceModule": null,
+            "appId": "Lenster"
+        },
+        "id": "0x53-0x04",
+        "profile": {
+            "__typename": "Profile",
+            "id": "0x53",
+            "name": "Alan",
+            "bio": "Cypherpunk | Engineer at Aave & Lens Protocol",
+            "location": "🇦🇷",
+            "website": "https://linktr.ee/donosonaumczuk",
+            "twitterUrl": "https://twitter.com/donosonaumczuk",
+            "handle": "donosonaumczuk",
+            "picture": {
+                "__typename": "MediaSet",
+                "original": {
+                    "__typename": "Media",
+                    "url": "https://lh3.googleusercontent.com/NMJCEoRpLRJFY7tCXwQ3GXh3br5jwxbB8yNYsuTG5Yai2mUJlMCAaQ5ffagXP1E11E9wDl_sH7wbUbhjyTXZGkJIy8GIWVmzVgQJ=w600",
+                    "mimeType": null
+                }
+            },
+            "coverPicture": {
+                "__typename": "MediaSet",
+                "original": {
+                    "__typename": "Media",
+                    "url": "https://ipfs.infura.io/ipfs/QmTbaAyePnTrRLWrpWz2gtm7x7UneFTNGfSRby2b2Pnv38",
+                    "mimeType": null
+                }
+            },
+            "ownedBy": "0x42a578e3557f5854B27D48E7d753fEb2f428546D",
+            "depatcher": null,
+            "stats": {
+                "__typename": "ProfileStats",
+                "totalFollowers": 3,
+                "totalFollowing": 2,
+                "totalPosts": 2,
+                "totalComments": 1,
+                "totalMirrors": 1,
+                "totalPublications": 4,
+                "totalCollects": 0
+            },
+            "followModule": null
+        },
+        "stats": {
+            "__typename": "PublicationStats",
+            "totalAmountOfMirrors": 0,
+            "totalAmountOfCollects": 0,
+            "totalAmountOfComments": 1
+        },
+        "metadata": {
+            "__typename": "MetadataOutput",
+            "name": "Comment by @donosonaumczuk",
+            "description": "Awesome work @yoginth!",
+            "content": "Awesome work @yoginth!",
+            "media": [],
+            "attributes": []
+        },
+        "createdAt": "2022-03-19T23:35:21.000Z",
+        "collectModule": {
+            "__typename": "RevertCollectModuleSettings"
+        },
+        "referenceModule": null,
+        "appId": "Lenster"
+    },
+    {
+        "__typename": "Post",
+        "id": "0x53-0x03",
+        "profile": {
+            "__typename": "Profile",
+            "id": "0x53",
+            "name": "Alan",
+            "bio": "Cypherpunk | Engineer at Aave & Lens Protocol",
+            "location": "🇦🇷",
+            "website": "https://linktr.ee/donosonaumczuk",
+            "twitterUrl": "https://twitter.com/donosonaumczuk",
+            "handle": "donosonaumczuk",
+            "picture": {
+                "__typename": "MediaSet",
+                "original": {
+                    "__typename": "Media",
+                    "url": "https://lh3.googleusercontent.com/NMJCEoRpLRJFY7tCXwQ3GXh3br5jwxbB8yNYsuTG5Yai2mUJlMCAaQ5ffagXP1E11E9wDl_sH7wbUbhjyTXZGkJIy8GIWVmzVgQJ=w600",
+                    "mimeType": null
+                }
+            },
+            "coverPicture": {
+                "__typename": "MediaSet",
+                "original": {
+                    "__typename": "Media",
+                    "url": "https://ipfs.infura.io/ipfs/QmTbaAyePnTrRLWrpWz2gtm7x7UneFTNGfSRby2b2Pnv38",
+                    "mimeType": null
+                }
+            },
+            "ownedBy": "0x42a578e3557f5854B27D48E7d753fEb2f428546D",
+            "depatcher": null,
+            "stats": {
+                "__typename": "ProfileStats",
+                "totalFollowers": 3,
+                "totalFollowing": 2,
+                "totalPosts": 2,
+                "totalComments": 1,
+                "totalMirrors": 1,
+                "totalPublications": 4,
+                "totalCollects": 0
+            },
+            "followModule": null
+        },
+        "stats": {
+            "__typename": "PublicationStats",
+            "totalAmountOfMirrors": 1,
+            "totalAmountOfCollects": 0,
+            "totalAmountOfComments": 2
+        },
+        "metadata": {
+            "__typename": "MetadataOutput",
+            "name": "Post by @donosonaumczuk",
+            "description": "I can't believe how cool Lenster is",
+            "content": "I can't believe how cool Lenster is",
+            "media": [],
+            "attributes": []
+        },
+        "createdAt": "2022-03-19T23:29:50.000Z",
+        "collectModule": {
+            "__typename": "RevertCollectModuleSettings"
+        },
+        "referenceModule": null,
+        "appId": "Lenster"
+    },
+    {
+        "__typename": "Post",
+        "id": "0x53-0x02",
+        "profile": {
+            "__typename": "Profile",
+            "id": "0x53",
+            "name": "Alan",
+            "bio": "Cypherpunk | Engineer at Aave & Lens Protocol",
+            "location": "🇦🇷",
+            "website": "https://linktr.ee/donosonaumczuk",
+            "twitterUrl": "https://twitter.com/donosonaumczuk",
+            "handle": "donosonaumczuk",
+            "picture": {
+                "__typename": "MediaSet",
+                "original": {
+                    "__typename": "Media",
+                    "url": "https://lh3.googleusercontent.com/NMJCEoRpLRJFY7tCXwQ3GXh3br5jwxbB8yNYsuTG5Yai2mUJlMCAaQ5ffagXP1E11E9wDl_sH7wbUbhjyTXZGkJIy8GIWVmzVgQJ=w600",
+                    "mimeType": null
+                }
+            },
+            "coverPicture": {
+                "__typename": "MediaSet",
+                "original": {
+                    "__typename": "Media",
+                    "url": "https://ipfs.infura.io/ipfs/QmTbaAyePnTrRLWrpWz2gtm7x7UneFTNGfSRby2b2Pnv38",
+                    "mimeType": null
+                }
+            },
+            "ownedBy": "0x42a578e3557f5854B27D48E7d753fEb2f428546D",
+            "depatcher": null,
+            "stats": {
+                "__typename": "ProfileStats",
+                "totalFollowers": 3,
+                "totalFollowing": 2,
+                "totalPosts": 2,
+                "totalComments": 1,
+                "totalMirrors": 1,
+                "totalPublications": 4,
+                "totalCollects": 0
+            },
+            "followModule": null
+        },
+        "stats": {
+            "__typename": "PublicationStats",
+            "totalAmountOfMirrors": 0,
+            "totalAmountOfCollects": 0,
+            "totalAmountOfComments": 0
+        },
+        "metadata": {
+            "__typename": "MetadataOutput",
+            "name": "Post by @donosonaumczuk",
+            "description": "Hello world",
+            "content": "Hello world",
+            "media": [],
+            "attributes": []
+        },
+        "createdAt": "2022-03-19T22:57:06.000Z",
+        "collectModule": {
+            "__typename": "RevertCollectModuleSettings"
+        },
+        "referenceModule": null,
+        "appId": "Lenster"
+    },
+    {
+        "__typename": "Mirror",
+        "mirrorOf": {
+            "__typename": "Post",
+            "id": "0x12-0x02",
+            "profile": {
+                "__typename": "Profile",
+                "id": "0x12",
+                "name": null,
+                "bio": null,
+                "location": null,
+                "website": null,
+                "twitterUrl": null,
+                "handle": "devjoshstevens",
+                "picture": {
+                    "__typename": "MediaSet",
+                    "original": {
+                        "__typename": "Media",
+                        "url": "https://ipfs.infura.io/ipfs/QmZ2Y6NrwvCst88S6V6eQVocUqkL9Zbmw6MqpNWZwYt4op",
+                        "mimeType": null
+                    }
+                },
+                "coverPicture": null,
+                "ownedBy": "0xD8c789626CDb461ec9347f26DDbA98F9383aa457",
+                "depatcher": null,
+                "stats": {
+                    "__typename": "ProfileStats",
+                    "totalFollowers": 9,
+                    "totalFollowing": 8,
+                    "totalPosts": 6,
+                    "totalComments": 3,
+                    "totalMirrors": 2,
+                    "totalPublications": 11,
+                    "totalCollects": 1
+                },
+                "followModule": null
+            },
+            "stats": {
+                "__typename": "PublicationStats",
+                "totalAmountOfMirrors": 1,
+                "totalAmountOfCollects": 0,
+                "totalAmountOfComments": 2
+            },
+            "metadata": {
+                "__typename": "MetadataOutput",
+                "name": "Post by @devjoshstevens",
+                "description": "Ok this is amazing! ",
+                "content": "Ok this is amazing! ",
+                "media": [],
+                "attributes": []
+            },
+            "createdAt": "2022-03-19T14:44:07.000Z",
+            "collectModule": {
+                "__typename": "RevertCollectModuleSettings"
+            },
+            "referenceModule": null,
+            "appId": "Lenster"
+        },
+        "id": "0x53-0x01",
+        "profile": {
+            "__typename": "Profile",
+            "id": "0x53",
+            "name": "Alan",
+            "bio": "Cypherpunk | Engineer at Aave & Lens Protocol",
+            "location": "🇦🇷",
+            "website": "https://linktr.ee/donosonaumczuk",
+            "twitterUrl": "https://twitter.com/donosonaumczuk",
+            "handle": "donosonaumczuk",
+            "picture": {
+                "__typename": "MediaSet",
+                "original": {
+                    "__typename": "Media",
+                    "url": "https://lh3.googleusercontent.com/NMJCEoRpLRJFY7tCXwQ3GXh3br5jwxbB8yNYsuTG5Yai2mUJlMCAaQ5ffagXP1E11E9wDl_sH7wbUbhjyTXZGkJIy8GIWVmzVgQJ=w600",
+                    "mimeType": null
+                }
+            },
+            "coverPicture": {
+                "__typename": "MediaSet",
+                "original": {
+                    "__typename": "Media",
+                    "url": "https://ipfs.infura.io/ipfs/QmTbaAyePnTrRLWrpWz2gtm7x7UneFTNGfSRby2b2Pnv38",
+                    "mimeType": null
+                }
+            },
+            "ownedBy": "0x42a578e3557f5854B27D48E7d753fEb2f428546D",
+            "depatcher": null,
+            "stats": {
+                "__typename": "ProfileStats",
+                "totalFollowers": 3,
+                "totalFollowing": 2,
+                "totalPosts": 2,
+                "totalComments": 1,
+                "totalMirrors": 1,
+                "totalPublications": 4,
+                "totalCollects": 0
+            },
+            "followModule": null
+        },
+        "stats": {
+            "__typename": "PublicationStats",
+            "totalAmountOfMirrors": 0,
+            "totalAmountOfCollects": 0,
+            "totalAmountOfComments": 0
+        },
+        "metadata": {
+            "__typename": "MetadataOutput",
+            "name": "Post by @devjoshstevens",
+            "description": "Ok this is amazing! ",
+            "content": "Ok this is amazing! ",
+            "media": [],
+            "attributes": []
+        },
+        "createdAt": "2022-03-19T22:53:45.000Z",
+        "collectModule": {
+            "__typename": "RevertCollectModuleSettings"
+        },
+        "referenceModule": {
+            "__typename": "FollowOnlyReferenceModuleSettings",
+            "type": "FollowerOnlyReferenceModule"
+        },
+        "appId": null
+    }
+]

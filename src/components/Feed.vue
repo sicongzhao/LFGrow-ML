@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="flex-col flex max-w-xl my-0">
-        <div class="text-left text-2xl font-bold p-4">
+        <div class="text-left text-xl font-bold p-4 mt-1">
             Feed
         </div>
         <!-- The publication thread -->

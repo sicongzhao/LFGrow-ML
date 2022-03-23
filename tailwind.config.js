@@ -5,6 +5,10 @@ module.exports = {
     extend: {
       boxShadow: {
         'ct': '0 0px 10px -1px rgba(0, 0, 0, 0.09)',
+      },
+      colors: {
+        'theme-color-1': '#E96F90',
+        'theme-color-2': '#E5CA00',
       }
     },
   },

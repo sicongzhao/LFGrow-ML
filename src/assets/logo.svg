@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="222px" height="222px" viewBox="0 0 222 222" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="111" cy="111" r="111"></circle>
+        <linearGradient x1="119.028217%" y1="28.3373845%" x2="-14.8146163%" y2="109.356206%" id="linearGradient-3">
+            <stop stop-color="#EFFF00" offset="0%"></stop>
+            <stop stop-color="#F449E5" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-9.0%" y="-9.9%" width="118.0%" height="119.9%" filterUnits="objectBoundingBox" id="filter-4">
+            <feGaussianBlur stdDeviation="7.92" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-5">
+            <stop stop-color="#000000" stop-opacity="0.2" offset="0%"></stop>
+            <stop stop-color="#000000" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Poster" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" fill="#D8D8D8" xlink:href="#path-1"></use>
+            <g mask="url(#mask-2)" id="Oval">
+                <g transform="translate(-13.000000, -9.000000)">
+                    <ellipse fill="url(#linearGradient-3)" filter="url(#filter-4)" cx="132.6" cy="119.467687" rx="132.3" ry="119.467687"></ellipse>
+                    <ellipse fill="url(#linearGradient-5)" opacity="0.12" cx="119.4" cy="119.767857" rx="119.4" ry="119.767857"></ellipse>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

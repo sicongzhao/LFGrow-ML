@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full text-left text-sm px-2 py-3 rounded-lg shadow-[#106ae0] shadow-ct my-1 bg-white" v-for="post in posts" :key="post">
+  <div class="flex w-full text-left text-sm px-2 py-3 rounded-lg shadow-[#106ae0] shadow-ct my-1 bg-white" v-for="post in filteredPosts" :key="post">
       <div class="flex-none flex flex-col w-16">
           <div class="w-full h-4" v-if="post.__typename=='Mirror'"></div>
           <div class="w-12 h-12 mx-auto mt-1">
@@ -92,35 +92,24 @@
 </template>
 
 <script>
-import json from '../store/sample-publications.json'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Post',
   data(){
-      return{
-          myJson: json,
+     return{
           showByIndex: null,
       }
   },
   computed: {
-    posts () {
-      return this.$store.getters.posts
-      // console.log(666)
-      // return this.myJson
-    },
-    testPost () {
-      return this.$store.getters.posts[0]
-    },
-    filteredPosts () {
-      return this.$store.getters.filteredPosts
-    },
-    defaultAvatar () {
-      return this.$store.getters.defaultAvatar
-    }
+    ...mapGetters([
+      'posts',
+      'filteredPosts',
+      'defaultAvatar'
+    ]),
   },
   methods: {
-    replaceByDefault(e) {
-      e.target.src = '../assets/logo.png'
-    }
+    
   },
   mounted () {
     

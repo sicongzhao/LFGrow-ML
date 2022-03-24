@@ -5,16 +5,26 @@ const store = createStore({
   state:{
     account: 1,
     error: null,
-    posts: null,
-    filteredPosts: null,
-    defaultAvatar: 'https://ipfs.infura.io/ipfs/Qma8mXoeorvPqodDazf7xqARoFD394s1njkze7q1X4CK8U'
+    posts: [],
+    
+    defaultAvatar: 'https://ipfs.infura.io/ipfs/Qma8mXoeorvPqodDazf7xqARoFD394s1njkze7q1X4CK8U',
+    // for models
+    postsCtt: [],
+    postsIds: [],
+    postDisplayAttr: [],
+    filteredPosts: [],
+    // filteredPostsUpdated: false,
   },
   getters: {
     account: (state) => state.account,
     error: (state) => state.error,
     posts: (state) => state.posts,
-    filteredPosts: (state) => state.filteredPosts,
     defaultAvatar: (state) => state.defaultAvatar,
+    postCts: (state) => state.postCts,
+    postIds: (state) => state.postIds,
+    postDisplayAttr: (state) => state.postDisplayAttr,
+    filteredPosts: (state) => state.filteredPosts,
+    // filteredPostsUpdated: (state) => state.filteredPostsUpdated,
   },
   mutations: {
     setAccount(state, account) {
@@ -26,17 +36,68 @@ const store = createStore({
     setPosts(state, posts) {
         state.posts = posts
     },
+    setPostCts(state, postCts) {
+        state.postCts = postCts
+    },
+    setPostIds(state, postIds) {
+        state.postIds = postIds
+    },
+    setPostDisplayAttr(state, postDisplayAttr) {
+        state.postDisplayAttr = postDisplayAttr
+    },
     setFilteredPosts(state, filteredPosts) {
         state.filteredPosts = filteredPosts
-    }
+    },
+    // setFilteredPostsUpdated(state, filteredPostsUpdated) {
+    //     state.filteredPostsUpdated = filteredPostsUpdated
+    // }
   },
   actions: {
+    // functions that triggers mutations
     async updatePosts({commit}, posts) {
-        console.log(posts)
         commit('setPosts', posts)
+    },
+    async updatePostDisplayAttr({commit}, postDisplayAttr) {
+        commit('setPostDisplayAttr', postDisplayAttr)
     },
     async updateFiltredPosts({commit}, filteredPosts) {
         commit('setFilteredPosts', filteredPosts)
+    },
+    async dataExtraction({commit}){
+        console.log('store.js -> Extracting Data')
+        let postCts = []
+        let postIds = []
+        this.getters.posts.forEach((element) => {
+            postIds.push(element.id)
+            if(element.__typename == 'Post') {
+            postCts.push(element.metadata.content)
+            } else if (element.__typename == 'Comment') {
+            let ctt = element.metadata.content + ' ' + element.mainPost.metadata.content
+            postCts.push(ctt)
+            } else if (element.__typename == 'Mirror'){
+            postCts.push(element.mirrorOf.metadata.content)
+            }
+        })
+        commit('setPostCts', postCts)
+        commit('setPostIds', postIds)
+        console.log(postIds)
+        // console.log(postCtt)
+        return [postCts, postIds]
+    },
+    async initPostDisplayAttr({commit}){
+        console.log('store.js -> Init Display Attributes')
+        let pda = []
+        this.getters.posts.forEach((element) => {
+            let tempAttribute = {
+                'id': element.id,
+                'show': true,
+                'recScore': 1,
+                'reasons': {}
+            }
+            pda.push(tempAttribute)
+        })
+        console.log(pda)
+        commit('setPostDisplayAttr', pda)
     },
     async connect({commit, dispatch}, connect) {
       try {

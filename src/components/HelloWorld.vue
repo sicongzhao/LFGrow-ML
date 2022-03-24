@@ -12,6 +12,10 @@ import * as tf from '@tensorflow/tfjs';
 // const use = require('@tensorflow-models/universal-sentence-encoder');
 const toxicity = require('@tensorflow-models/toxicity');
 
+// Fake data for testing purpose
+import json from '../store/sample-publications.json'
+import { mapGetters } from 'vuex'
+
 
 const GET_PUBLICATIONS = `
   query($request: PublicationsQueryRequest!) {
@@ -914,23 +918,27 @@ const GET_PUBLICATIONS_2 = `
 
 export default {
   name: 'HelloWorld',
+  data(){
+      return{
+          myJson: json,
+      }
+  },
+  
   computed: {
-    posts () {
-      return this.$store.getters.posts
-    },
-    filteredPosts () {
-      return this.$store.getters.filteredPosts
-    },
+    ...mapGetters([
+      'posts',
+      'filteredPosts',
+    ])
   },
   methods: {
     showPosts() {
       alert(this.posts)
     },
     async updatePosts(posts) {
-      await this.$store.dispatch("updatePosts", posts);
+      await this.$store.dispatch("updatePosts", posts)
     },
-    async updateFilteredPosts(posts) {
-      await this.$store.dispatch("updateFiltredPosts", posts);
+    async updateFilteredPosts(filteredPosts) {
+      await this.$store.dispatch("updateFiltredPosts", filteredPosts)
     },
     async getPublicationsRequest (getPublicationQuery) {
       return apolloClient.query({
@@ -956,22 +964,15 @@ export default {
         },
       })
     },
-    parsePosts(posts){
-      let postCtt = []
-      posts.forEach((element) => {
-        if(element.__typename == 'Post') {
-          postCtt.push(element.metadata.content)
-        }
-      })
-      return postCtt
-    },
+    
     detectMalicious(sentences){
+      // not needed. all ML in Feed.vue
       const threshold = 0.9;
       toxicity.load(threshold).then(model => {
         model.classify(sentences).then(predictions => {
-          console.log(predictions);
-        });
-      });
+          console.log(predictions)
+        })
+      })
     },
     removePosts(postIds=[]) {
       if (postIds.length == 0) {
@@ -986,6 +987,8 @@ export default {
     const a = tf.tensor([1,2,3,4])
     // const d = tf.tensor([2,3,4,5])
     a.print()
+
+    // this.detectMalicious(['Fuck you!', 'Life is good!'])
     // console.log(a.shape)
     // const b = a.reshape([2,2])
     // b.print()
@@ -1038,17 +1041,20 @@ export default {
     //   console.log(result)
     // })
     // const that = this
-    
+    let that = this
     const res3 = this.getPublicationsRequest2({
-      profileId: "0x13", // id that works: [53, 13, ]
+      profileId: "0x53", // id that works: [53, 13, 60, ]
       publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
       limit: 50 // cannot exceed the maximum limit
     })
     console.log(res3)
-    res3.then(result=>this.updatePosts(result.data.publications.items))
+    // res3.then((result)=>{
+    //   that.updatePosts(result.data.publications.items)
+    //   that.updateFilteredPosts(result.data.publications.items)
+    // })
 
-
-    
+    that.updatePosts(this.myJson) // for testing purpose, should remove
+    that.updateFilteredPosts(this.myJson) // for testing purpose, should remove
   }
 
 }

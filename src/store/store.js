@@ -13,6 +13,7 @@ const store = createStore({
     postsIds: [],
     postDisplayAttr: [],
     filteredPosts: [],
+    hiddenPosts: [],
     // filteredPostsUpdated: false,
   },
   getters: {
@@ -24,6 +25,7 @@ const store = createStore({
     postIds: (state) => state.postIds,
     postDisplayAttr: (state) => state.postDisplayAttr,
     filteredPosts: (state) => state.filteredPosts,
+    hiddenPosts: (state) => state.hiddenPosts,
     // filteredPostsUpdated: (state) => state.filteredPostsUpdated,
   },
   mutations: {
@@ -48,6 +50,9 @@ const store = createStore({
     setFilteredPosts(state, filteredPosts) {
         state.filteredPosts = filteredPosts
     },
+    setHiddenPosts(state, hiddenPosts) {
+        state.hiddenPosts = hiddenPosts
+    },
     // setFilteredPostsUpdated(state, filteredPostsUpdated) {
     //     state.filteredPostsUpdated = filteredPostsUpdated
     // }
@@ -62,6 +67,9 @@ const store = createStore({
     },
     async updateFiltredPosts({commit}, filteredPosts) {
         commit('setFilteredPosts', filteredPosts)
+    },
+    async updateHiddenPosts({commit}, hiddenPosts) {
+        commit('setHiddenPosts', hiddenPosts)
     },
     async dataExtraction({commit}){
         console.log('store.js -> Extracting Data')

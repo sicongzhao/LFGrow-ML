@@ -129,6 +129,9 @@ export default {
         async updateFiltredPosts(filteredPosts) {
             await this.$store.dispatch('updateFiltredPosts', filteredPosts)
         },
+        async updateHiddenPosts(hiddenPosts) {
+            await this.$store.dispatch('updateHiddenPosts', hiddenPosts)
+        },
 
         // data pipeline
         triggerModel(modelId) {
@@ -222,6 +225,7 @@ export default {
                 }
             })
             this.updateFiltredPosts(postsShow)
+            this.updateHiddenPosts(postsHide)
         },
 
         // debug. delete later

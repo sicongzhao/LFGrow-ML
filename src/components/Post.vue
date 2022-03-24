@@ -89,6 +89,10 @@
       </div>
       
   </div>
+  <div v-if="hiddenPosts.length > 0">
+    <div class="flex w-full text-left text-sm px-2 py-3 rounded-lg shadow-[#106ae0] shadow-ct my-1 text-gray-400 bg-gray-200">{{hiddenPosts.length}} hidden publication(s). <span class="text-blue-500 cursor-pointer">&nbsp;Click&nbsp;</span> to learn more.</div>
+    <!-- It makes sense to show the hidden posts if users requested.  -->
+  </div>
 </template>
 
 <script>
@@ -105,6 +109,7 @@ export default {
     ...mapGetters([
       'posts',
       'filteredPosts',
+      'hiddenPosts',
       'defaultAvatar'
     ]),
   },

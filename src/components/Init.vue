@@ -10,7 +10,6 @@ import { apolloClient } from '../graph/apollo-client';
 require('@tensorflow/tfjs');
 import * as tf from '@tensorflow/tfjs';
 // const use = require('@tensorflow-models/universal-sentence-encoder');
-const toxicity = require('@tensorflow-models/toxicity');
 
 // Fake data for testing purpose
 import json from '../store/sample-publications.json'
@@ -917,7 +916,7 @@ const GET_PUBLICATIONS_2 = `
 `;
 
 export default {
-  name: 'HelloWorld',
+  name: 'Init',
   data(){
       return{
           myJson: json,
@@ -939,6 +938,9 @@ export default {
     },
     async updateFilteredPosts(filteredPosts) {
       await this.$store.dispatch("updateFiltredPosts", filteredPosts)
+    },
+    async dataExtraction() {
+      await this.$store.dispatch('dataExtraction')
     },
     async getPublicationsRequest (getPublicationQuery) {
       return apolloClient.query({
@@ -965,15 +967,7 @@ export default {
       })
     },
     
-    detectMalicious(sentences){
-      // not needed. all ML in Feed.vue
-      const threshold = 0.9;
-      toxicity.load(threshold).then(model => {
-        model.classify(sentences).then(predictions => {
-          console.log(predictions)
-        })
-      })
-    },
+    
     removePosts(postIds=[]) {
       if (postIds.length == 0) {
         this.updateFilteredPosts(this.posts)
@@ -988,7 +982,6 @@ export default {
     // const d = tf.tensor([2,3,4,5])
     a.print()
 
-    // this.detectMalicious(['Fuck you!', 'Life is good!'])
     // console.log(a.shape)
     // const b = a.reshape([2,2])
     // b.print()
@@ -1042,19 +1035,18 @@ export default {
     // })
     // const that = this
     let that = this
-    const res3 = this.getPublicationsRequest2({
+    this.getPublicationsRequest2({
       profileId: "0x53", // id that works: [53, 13, 60, ]
       publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
       limit: 50 // cannot exceed the maximum limit
+    }).then((result)=>{
+      console.log(result.data.publications.items.length)
+      // that.updatePosts(result.data.publications.items)
+      that.updatePosts(that.myJson)
+      
     })
-    console.log(res3)
-    // res3.then((result)=>{
-    //   that.updatePosts(result.data.publications.items)
-    //   that.updateFilteredPosts(result.data.publications.items)
-    // })
 
-    that.updatePosts(this.myJson) // for testing purpose, should remove
-    that.updateFilteredPosts(this.myJson) // for testing purpose, should remove
+    // that.updatePosts(this.myJson) // for testing purpose, should remove
   }
 
 }

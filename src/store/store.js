@@ -8,13 +8,51 @@ const store = createStore({
     posts: [],
     
     defaultAvatar: 'https://ipfs.infura.io/ipfs/Qma8mXoeorvPqodDazf7xqARoFD394s1njkze7q1X4CK8U',
-    // for models
+    
+    // data pipeline
     postsCtt: [],
     postsIds: [],
     postDisplayAttr: [],
     filteredPosts: [],
     hiddenPosts: [],
+
+    // model status
+
+    dataStatus: {
+        'downloading': false,
+        'postUpToDate': false,
+    },
+    /*
+        modelStatus:
+        * active: if model is activated
+        * running: if model is running now
+        * upToDate: if the result generated is based on the latest publication data
+        * displayAttr: model processed display attributes
+    */
+    modelStatus: {
+        'model1': {
+            'name': 'Toxicity Detection Model',
+            'active': false,
+            'running': false,
+            'upToDate': false,
+            'displayAttr': []
+        },
+        'model2': {
+            'name': 'Similarity Aggregator',
+            'active': false,
+            'running': false,
+            'upToDate': false,
+            'displayAttr': []
+        }
+    },
+
+    // for data collection
+    likedPosts: [],
+    mutedPosts: [],
+
     // filteredPostsUpdated: false,
+
+    
   },
   getters: {
     account: (state) => state.account,
@@ -26,6 +64,10 @@ const store = createStore({
     postDisplayAttr: (state) => state.postDisplayAttr,
     filteredPosts: (state) => state.filteredPosts,
     hiddenPosts: (state) => state.hiddenPosts,
+    likedPosts: (state) => state.likedPosts,
+    mutedPosts: (state) => state.mutedPosts,
+    dataStatus: (state) => state.dataStatus,
+    modelStatus: (state) => state.modelStatus,
     // filteredPostsUpdated: (state) => state.filteredPostsUpdated,
   },
   mutations: {
@@ -36,7 +78,9 @@ const store = createStore({
         state.error = error
     },
     setPosts(state, posts) {
+        console.log('setPosts started')
         state.posts = posts
+        console.log('setPosts finished')
     },
     setPostCts(state, postCts) {
         state.postCts = postCts
@@ -48,10 +92,18 @@ const store = createStore({
         state.postDisplayAttr = postDisplayAttr
     },
     setFilteredPosts(state, filteredPosts) {
+        console.log('setFilteredPosts started')
         state.filteredPosts = filteredPosts
+        console.log('setFilteredPosts finished')
     },
     setHiddenPosts(state, hiddenPosts) {
         state.hiddenPosts = hiddenPosts
+    },
+    setLikedPosts(state, likedPosts) {
+        state.likedPosts = likedPosts
+    },
+    setMutedPosts(state, mutedPosts) {
+        state.mutedPosts = mutedPosts
     },
     // setFilteredPostsUpdated(state, filteredPostsUpdated) {
     //     state.filteredPostsUpdated = filteredPostsUpdated
@@ -59,20 +111,28 @@ const store = createStore({
   },
   actions: {
     // functions that triggers mutations
-    async updatePosts({commit}, posts) {
+    async updatePosts({commit, dispatch}, posts) {
+        this.state.dataStatus.postUpToDate = false
+        this.state.dataStatus.downloading = true
         commit('setPosts', posts)
+        commit('setFilteredPosts', posts)
+        await dispatch('dataExtraction')
+        await dispatch('initPostDisplayAttr')
+        // reset model 'upToDate', because 'posts' changed
+        for (let key in this.state.modelStatus) {
+            this.state.modelStatus[key].upToDate = false
+            this.state.modelStatus[key].displayAttr = await dispatch('initPostDisplayAttr')
+        }
+        commit('setPostDisplayAttr', await dispatch('initPostDisplayAttr'))
+        // console.log(this.state.modelStatus)
+        this.state.dataStatus.postUpToDate = true
+        this.state.dataStatus.downloading = false
     },
     async updatePostDisplayAttr({commit}, postDisplayAttr) {
         commit('setPostDisplayAttr', postDisplayAttr)
     },
-    async updateFiltredPosts({commit}, filteredPosts) {
-        commit('setFilteredPosts', filteredPosts)
-    },
-    async updateHiddenPosts({commit}, hiddenPosts) {
-        commit('setHiddenPosts', hiddenPosts)
-    },
     async dataExtraction({commit}){
-        console.log('store.js -> Extracting Data')
+        console.log('dataExtraction started')
         let postCts = []
         let postIds = []
         this.getters.posts.forEach((element) => {
@@ -88,24 +148,76 @@ const store = createStore({
         })
         commit('setPostCts', postCts)
         commit('setPostIds', postIds)
-        console.log(postIds)
-        // console.log(postCtt)
+        console.log('dataExtraction ended')
         return [postCts, postIds]
     },
-    async initPostDisplayAttr({commit}){
-        console.log('store.js -> Init Display Attributes')
+    async initPostDisplayAttr(){
+        console.log('initPostDisplayAttr started')
         let pda = []
         this.getters.posts.forEach((element) => {
             let tempAttribute = {
                 'id': element.id,
                 'show': true,
                 'recScore': 1,
-                'reasons': {}
+                'reasons': []
             }
             pda.push(tempAttribute)
         })
-        console.log(pda)
-        commit('setPostDisplayAttr', pda)
+        console.log('initPostDisplayAttr ended')
+        return pda
+    },
+    async isModelRunning(){
+        for (let key in this.state.modelStatus) {
+            if (this.state.modelStatus[key].running && this.state.modelStatus[key].active) {
+                return true
+            }
+        }
+        return false
+    },
+    async updateView({dispatch, commit}) {
+        // combine displayAttr in modelStatus
+        // check modelStatus to make sure data processing ends
+        let modelRunning = await dispatch('isModelRunning')
+        if (modelRunning) {
+            console.log('models are running, will process later')
+            setTimeout(await dispatch('updateView'), 1000)
+        } else {
+            let pda = null
+            for (let key in this.state.modelStatus) {
+                if (this.state.modelStatus[key].active) {
+                    if (pda == null) {
+                        pda = this.state.modelStatus[key].displayAttr
+                    } else {
+                        pda.forEach((ele1)=>{
+                            this.state.modelStatus[key].displayAttr.forEach((ele2)=>{
+                                if (ele1.id == ele2.id) {
+                                    ele1.show = ele1.show && ele2.show
+                                    ele1.recScore *= ele2.recScore
+                                    ele1.reasons = {...ele1.reasons, ...ele2.reasons}
+                                }
+                            })
+                        })
+                    }
+                }
+            }
+            // console.log(pda)
+            commit('setPostDisplayAttr', pda)
+            let postsShow = []
+            let postsHide = []
+            this.state.posts.forEach((postElement, i)=>{
+                if (pda[i].show) {
+                    postElement['reasons'] = pda[i].reasons
+                    postElement['recScore'] = pda[i].recScore
+                    postsShow.push(postElement)
+                } else {
+                    postElement['reasons'] = pda[i].reasons
+                    postElement['recScore'] = pda[i].recScore
+                    postsHide.push(postElement)
+                }
+            })
+            commit('setFilteredPosts', postsShow)
+            commit('setHiddenPosts', postsHide)
+        }
     },
     async connect({commit, dispatch}, connect) {
       try {

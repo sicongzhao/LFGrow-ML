@@ -45,7 +45,7 @@
                         <SwitchLabel as="span" class="text-sm font-medium text-gray-900" passive>Similarity Aggregator</SwitchLabel>
                         <SwitchDescription as="span" class="text-sm text-gray-500">Group similar posts, improve your reading experience.</SwitchDescription>
                         </span>
-                        <Switch v-model="enabled_2" @click="updateModel2Status()" :class="[enabled_2 ? 'bg-theme-color-1' : 'bg-gray-200', 'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-color-1']">
+                        <Switch v-model="enabled_2" @click="model2_1()" :class="[enabled_2 ? 'bg-theme-color-1' : 'bg-gray-200', 'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-color-1']">
                         <span aria-hidden="true" :class="[enabled_2 ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200']" />
                         </Switch>
                     </SwitchGroup>    
@@ -97,8 +97,11 @@ export default {
             'postCts',
             'postDisplayAttr',
             'filteredPosts',
-            'likedPosts',
-            'modelStatus'
+            'likedPostIds',
+            'mutedPostIds',
+            'modelStatus',
+            'trainRaw',
+            'trainDataIds'
         ]),
     },
     watch: {
@@ -106,6 +109,10 @@ export default {
             console.log('postDisplayAttr changed!')
             // console.log(newPostDisplayAttr, oldPostDisplayAttr)
         },
+        trainRaw () {
+            console.log('trainRaw updated!')
+            this.model2_2()
+        }
     },
     methods: {
         // trigger functions defined in store.js
@@ -124,8 +131,8 @@ export default {
         async updateView(){
             await this.$store.dispatch('updateView')
         },
-        async updateModelStatus(model, statusKey, statusValue){
-            await this.$store.dispatch('updateModelStatus', model, statusKey, statusValue)
+        async updateTrainDataIds(value){
+            await this.$store.dispatch('updateTrainDataIds', value)
         },
         // model1 - toxicity detection
         async model1(){
@@ -141,7 +148,7 @@ export default {
                 console.log(this.modelStatus.model1.upToDate)
                 console.log('model1 starts processing')
                 this.modelStatus.model1.running = true
-                this.modelStatus.model1.upTodate = false
+                this.modelStatus.model1.upToDate = false
                 // assign variables
                 let that = this
                 let modelName = this.modelStatus.model1.name
@@ -172,14 +179,51 @@ export default {
                 this.modelStatus.model1.running = false
             }
         },
+        async model2_1(){
+
+            this.modelStatus.model2.active = this.enabled_2
+            if (!this.modelStatus.model2.active) {
+                console.log('model2 is not active, stop processing')
+                return
+            } else if (this.modelStatus.model2.upToDate) {
+                console.log('model2 is up-to-date, stop processing')
+                return
+            } else {
+                this.modelStatus.model2.running = true
+                this.modelStatus.model2.upToDate = false
+                // combine 'likedPostIds' and 'mutedPostIds'
+
+                // update 'trainDataIds' to trigger 'getPublicationsByPublicationIds' in Init.vue
+                this.updateTrainDataIds([...this.likedPostIds,...this.mutedPostIds])
+                
+                // this.modelStatus.model2.upToDate = true
+                // this.modelStatus.model2.running = false
+            }
+        },
+        async model2_2(){
+            console.log(this.trainRaw)
+            // extract content, use dataExtraction (need some modification)
+
+            // encoding
+
+
+        },
+        async getTrainingData(){
+            
+        },
+        async genTrainingData(){
+            console.log('start generating training data')
+        },
 
         // debug. delete later
         debug(){
-            this.updateView()
+            // this.updateView()
+            // console.log(this.trainRaw)
+            // this.updateTrainDataIds(this.trainDataIds+1)
         }
     },
     mounted () {
-
+        
     }
 }
 

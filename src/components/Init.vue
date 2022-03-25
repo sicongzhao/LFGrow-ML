@@ -922,12 +922,29 @@ export default {
           myJson: json,
       }
   },
-  
   computed: {
     ...mapGetters([
       'posts',
       'filteredPosts',
+      'modelStatus',
+      'trainDataIds',
     ])
+  },
+  watch: {
+    modelStatus () {
+      console.log('modelStatus changed!')
+      // console.log(newModelStatus, oldModelStatus)
+    },
+    trainDataIds (newTrainDataIds) {
+      // console.log('trainDataIds changed!', newTrainDataIds)
+      // console.log(this.modelStatus.model2.active, this.modelStatus.model2.upToDate)
+      if (this.modelStatus.model2.active && !this.modelStatus.model2.upToDate) {
+        this.getPublicationsByPublicationIds (newTrainDataIds)
+      } else {
+        console.log('no data changed, will not trigger publication download')
+      }
+      
+    }
   },
   methods: {
     showPosts() {
@@ -938,6 +955,9 @@ export default {
     },
     async updateFilteredPosts(filteredPosts) {
       await this.$store.dispatch("updateFiltredPosts", filteredPosts)
+    },
+    async updateTrainRaw(posts) {
+      await this.$store.dispatch('updateTrainRaw', posts)
     },
     async dataExtraction() {
       await this.$store.dispatch('dataExtraction')
@@ -966,15 +986,22 @@ export default {
         },
       })
     },
-    
-    
-    removePosts(postIds=[]) {
-      if (postIds.length == 0) {
-        this.updateFilteredPosts(this.posts)
-      } else {
-        console.log(66)
-      }
+    async getPublicationsByPublicationIds (publicationIds) {
+      let that = this
+      this.getPublicationsRequest2({
+        publicationIds: publicationIds, // id that works: [53, 13, 60, ]
+      }).then((result)=>{
+        console.log(result.data.publications.items)
+        that.updateTrainRaw(result.data.publications.items)
+      })
     }
+    // async removePosts(postIds=[]) {
+    //   if (postIds.length == 0) {
+    //     this.updateFilteredPosts(this.posts)
+    //   } else {
+    //     console.log(66)
+    //   }
+    // }
   },
   mounted () {
     // Tensorflow.js Playground
@@ -1040,11 +1067,12 @@ export default {
       publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
       limit: 50 // cannot exceed the maximum limit
     }).then((result)=>{
-      console.log(result.data.publications.items.length)
+      console.log(result)
       // that.updatePosts(result.data.publications.items)
       that.updatePosts(that.myJson)
       
     })
+    
 
     // that.updatePosts(this.myJson) // for testing purpose, should remove
   }

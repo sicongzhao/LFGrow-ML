@@ -18,7 +18,7 @@
               <div class="font-medium text-gray-400">{{post.mirrorOf.createdAt.slice(5,10)}}</div>
               <div class="flex-1"></div>
               <div class="w-6 h-6 rounded-full cursor-pointer relative">
-                <img @click="unLikePost(post.id)" v-if="likedPosts.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/liked.svg" alt="">
+                <img @click="unLikePost(post.id)" v-if="likedPostIds.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/liked.svg" alt="">
                 <img class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/dot.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
                 <div class="w-24 h-6 absolute rounded-md top-0 right-0" v-show="showByIndex === post.id" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
                   <span class="relative w-24 z-0 h-6 inline-flex shadow-sm rounded-md">
@@ -45,8 +45,8 @@
               <div class="font-medium text-gray-400">{{post.createdAt.slice(5,10)}}</div>
               <div class="flex-1"></div>
               <div class="w-6 h-6 rounded-full cursor-pointer relative -top-2">
-                <img @click="unLikePost(post.id)" v-if="likedPosts.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/liked.svg" alt="">
-                <img v-if="!likedPosts.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/dot.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
+                <img @click="unLikePost(post.id)" v-if="likedPostIds.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/liked.svg" alt="">
+                <img v-if="!likedPostIds.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/dot.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
                 <div class="w-24 h-6 absolute rounded-md top-0 right-0" v-show="showByIndex === post.id" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
                   <span class="relative w-24 z-0 h-6 inline-flex shadow-sm rounded-md">
                     <button @click="likePost(post.id)" type="button" class="relative w-12 inline-flex items-center px-4 py-2 rounded-l-md border border-gray-200 bg-white hover:bg-gray-50">
@@ -227,33 +227,37 @@ export default {
       'posts',
       'filteredPosts',
       'hiddenPosts',
-      'likedPosts',
-      'mutedPosts',
-      'defaultAvatar'
+      'likedPostIds',
+      'mutedPostIds',
+      'defaultAvatar',
+      'modelStatus'
     ]),
   },
   methods: {
     likePost (postId) {
       this.showByIndex = null
-      if (!this.likedPosts.includes(postId)) {
-        this.likedPosts.push(postId)
+      this.model2OutDated()
+      if (!this.likedPostIds.includes(postId)) {
+        this.likedPostIds.push(postId)
       }
-      // console.log(this.likedPosts)
+      // console.log(this.likedPostIds)
     },
     unLikePost (postId) {
       this.showByIndex = postId
-      const idx = this.likedPosts.indexOf(postId)
+      this.model2OutDated()
+      const idx = this.likedPostIds.indexOf(postId)
       if (idx > -1) {
-        this.likedPosts.splice(idx,1)
+        this.likedPostIds.splice(idx,1)
       }
-      // console.log(this.likedPosts)
+      // console.log(this.likedPostIds)
     },
     mutePost (postId, postIdx) {
       this.showByIndex = null
-      if (!this.mutedPosts.includes(postId)) {
-        this.mutedPosts.push(postId)
+      this.model2OutDated()
+      if (!this.mutedPostIds.includes(postId)) {
+        this.mutedPostIds.push(postId)
       }
-      // console.log(this.mutedPosts)
+      // console.log(this.mutedPostIds)
       // console.log(postId, postIdx)
       if ('reasons' in this.filteredPosts[postIdx] && Array.isArray(this.filteredPosts[postIdx].reasons)){
           this.filteredPosts[postIdx].reasons.push(this.muteErrInfo)
@@ -270,11 +274,15 @@ export default {
       console.log(this.hiddenPosts[postIdx].reasons)
       if (idx > -1) {
         this.hiddenPosts[postIdx].reasons.splice(idx,1)
+        this.model2OutDated()
       }
       console.log(this.hiddenPosts[postIdx].reasons)
       this.hiddenPosts[postIdx]
       this.filteredPosts.push(this.hiddenPosts[postIdx])
       this.hiddenPosts.splice(postIdx, 1)
+    },
+    model2OutDated() {
+      this.modelStatus.model2.upTodate = false
     }
     // showHidden () {
 

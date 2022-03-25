@@ -16,8 +16,7 @@ const store = createStore({
     filteredPosts: [],
     hiddenPosts: [],
 
-    // model status
-
+    // status
     dataStatus: {
         'downloading': false,
         'postUpToDate': false,
@@ -46,9 +45,19 @@ const store = createStore({
         }
     },
 
-    // for data collection
-    likedPosts: [],
-    mutedPosts: [],
+    // training data
+    likedPostIds: [],
+    mutedPostIds: [],
+    trainRaw: [],
+    trainX: [],
+    trainY: [],
+    /*
+        trainDataIds: used as a way for Feed.vue to trigger a method in Init.vue
+                            when activating model2 in Feed.vue, trainDataIds get updated
+                            the watch in Init.vue will trigger the Lens-API request
+    */
+    trainDataIds: [],
+
 
     // filteredPostsUpdated: false,
 
@@ -64,10 +73,14 @@ const store = createStore({
     postDisplayAttr: (state) => state.postDisplayAttr,
     filteredPosts: (state) => state.filteredPosts,
     hiddenPosts: (state) => state.hiddenPosts,
-    likedPosts: (state) => state.likedPosts,
-    mutedPosts: (state) => state.mutedPosts,
+    likedPostIds: (state) => state.likedPostIds,
+    mutedPostIds: (state) => state.mutedPostIds,
     dataStatus: (state) => state.dataStatus,
     modelStatus: (state) => state.modelStatus,
+    trainRaw: (state) => state.trainRaw,
+    trainX: (state) => state.trainX,
+    trainY: (state) => state.trainY,
+    trainDataIds: (state) => state.trainDataIds,
     // filteredPostsUpdated: (state) => state.filteredPostsUpdated,
   },
   mutations: {
@@ -78,9 +91,7 @@ const store = createStore({
         state.error = error
     },
     setPosts(state, posts) {
-        console.log('setPosts started')
         state.posts = posts
-        console.log('setPosts finished')
     },
     setPostCts(state, postCts) {
         state.postCts = postCts
@@ -99,11 +110,23 @@ const store = createStore({
     setHiddenPosts(state, hiddenPosts) {
         state.hiddenPosts = hiddenPosts
     },
-    setLikedPosts(state, likedPosts) {
-        state.likedPosts = likedPosts
+    setLikedPostIds(state, likedPostIds) {
+        state.likedPostIds = likedPostIds
     },
-    setMutedPosts(state, mutedPosts) {
-        state.mutedPosts = mutedPosts
+    setMutedPostIds(state, mutedPostIds) {
+        state.mutedPostIds = mutedPostIds
+    },
+    setTrainRaw(state, trainRaw) {
+        state.trainRaw = trainRaw
+    },
+    setTrainX(state, trainX) {
+        state.trainX = trainX
+    },
+    setTrainY(state, trainY) {
+        state.trainY = trainY
+    },
+    setTrainDataIds(state, trainDataIds) {
+        state.trainDataIds = trainDataIds
     },
     // setFilteredPostsUpdated(state, filteredPostsUpdated) {
     //     state.filteredPostsUpdated = filteredPostsUpdated
@@ -130,6 +153,18 @@ const store = createStore({
     },
     async updatePostDisplayAttr({commit}, postDisplayAttr) {
         commit('setPostDisplayAttr', postDisplayAttr)
+    },
+    async updateTrainRaw({commit}, trainRaw) {
+        commit('setTrainRaw', trainRaw)
+    },
+    async updateTrainX({commit}, trainX) {
+        commit('setTrainX', trainX)
+    },
+    async updateTrainY({commit}, trainY) {
+        commit('setTrainY', trainY)
+    },
+    async updateTrainDataIds({commit}, trainDataIds) {
+        commit('setTrainDataIds', trainDataIds)
     },
     async dataExtraction({commit}){
         console.log('dataExtraction started')

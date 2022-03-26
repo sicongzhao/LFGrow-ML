@@ -107,7 +107,7 @@
   <div class="flex flex-col bg-indigo-900 my-1 rounded-lg shadow-[#106ae0]" v-for="(post, index) in hiddenPosts" :key="post">
     <div class="h-10 text-white text-xs text-left px-3 flex justify-between items-center">
       <div>{{post.reasons[0]}}</div>
-      <button class="bg-white rounded-sm text-gray-500 text-xs font-bold px-2 h-6" @click="errorCase(index)">Record Error</button>
+      <button class="bg-white rounded-sm text-gray-500 text-xs font-bold px-2 h-6" @click="errorCase(index)">Unhide</button>
     </div>
     <div class="flex w-full text-left text-sm px-2 py-3 rounded-lg shadow-[#106ae0] shadow-ct bg-gray-200">
       <div class="flex-none flex flex-col w-16">
@@ -219,27 +219,46 @@ export default {
      return{
           showByIndex: null,
           showHidden: false,
-          muteErrInfo: 'You hide this publication.'
+          // muteErrInfo: 'You hide this publication.'
       }
   },
   computed: {
     ...mapGetters([
+      'muteErrInfo',
       'posts',
       'filteredPosts',
       'hiddenPosts',
       'likedPostIds',
       'mutedPostIds',
+      'newTrainPostIds',
       'defaultAvatar',
-      'modelStatus'
+      'modelStatus',
     ]),
   },
   methods: {
+    async updateModelStatusValue(modelId, key, value){
+      await this.$store.dispatch('updateModelStatusValue', [modelId, key, value])
+    },
+    storeLikedPostIds(){
+      localStorage.setItem('likedPostIds_',JSON.stringify(this.likedPostIds))
+    },
+    storeMutedPostIds(){
+      localStorage.setItem('mutedPostIds_',JSON.stringify(this.mutedPostIds))
+    },
+    storeNewTrainPostIds(){
+      localStorage.setItem('newTrainPostIds_',JSON.stringify(this.newTrainPostIds))
+    },
     likePost (postId) {
       this.showByIndex = null
       this.model2OutDated()
       if (!this.likedPostIds.includes(postId)) {
         this.likedPostIds.push(postId)
       }
+      this.storeLikedPostIds()
+      if (!this.newTrainPostIds.includes(postId)) {
+        this.newTrainPostIds.push(postId)
+      }
+      this.storeNewTrainPostIds()
       // console.log(this.likedPostIds)
     },
     unLikePost (postId) {
@@ -249,7 +268,13 @@ export default {
       if (idx > -1) {
         this.likedPostIds.splice(idx,1)
       }
+      this.storeLikedPostIds()
       // console.log(this.likedPostIds)
+      const idx2 = this.newTrainPostIds.indexOf(postId)
+      if (idx2 > -1) {
+        this.newTrainPostIds.splice(idx2,1)
+      }
+      this.storeNewTrainPostIds()
     },
     mutePost (postId, postIdx) {
       this.showByIndex = null
@@ -257,32 +282,54 @@ export default {
       if (!this.mutedPostIds.includes(postId)) {
         this.mutedPostIds.push(postId)
       }
+      this.storeMutedPostIds()
+      if (!this.newTrainPostIds.includes(postId)) {
+        this.newTrainPostIds.push(postId)
+      }
+      this.storeNewTrainPostIds()
       // console.log(this.mutedPostIds)
       // console.log(postId, postIdx)
       if ('reasons' in this.filteredPosts[postIdx] && Array.isArray(this.filteredPosts[postIdx].reasons)){
-          this.filteredPosts[postIdx].reasons.push(this.muteErrInfo)
+        this.filteredPosts[postIdx].reasons.push(this.muteErrInfo)
       } else {
+        // console.log(666)
+        // console.log(this.filteredPosts[postIdx])
         this.filteredPosts[postIdx].reasons = [this.muteErrInfo]
       }
       this.hiddenPosts.push(this.filteredPosts[postIdx])
       this.filteredPosts.splice(postIdx, 1)
     },
     errorCase(postIdx) {
-      alert('Sorry for the error. This is recorded and will be used to train the model.')
+      alert('This is input and will be used to train the model.')
       console.log(postIdx)
-      const idx = this.hiddenPosts[postIdx].reasons.indexOf(this.muteErrInfo)
       console.log(this.hiddenPosts[postIdx].reasons)
-      if (idx > -1) {
-        this.hiddenPosts[postIdx].reasons.splice(idx,1)
-        this.model2OutDated()
+      console.log(typeof(this.hiddenPosts[postIdx].reasons))
+      if (Array.isArray(this.hiddenPosts[postIdx].reasons)){
+        const idx = this.hiddenPosts[postIdx].reasons.indexOf(this.muteErrInfo)
+        if (idx > -1) {
+          this.hiddenPosts[postIdx].reasons.splice(idx,1)
+          this.model2OutDated()
+        }
       }
+      // const idx = this.hiddenPosts[postIdx].reasons.indexOf(this.muteErrInfo)
       console.log(this.hiddenPosts[postIdx].reasons)
-      this.hiddenPosts[postIdx]
+      // this.hiddenPosts[postIdx]
+      const idx = this.mutedPostIds.indexOf(this.hiddenPosts[postIdx].id)
+      if (idx > -1) {
+        this.mutedPostIds.splice(idx,1)
+      }
+      const idx2 = this.newTrainPostIds.indexOf(this.hiddenPosts[postIdx].id)
+      if (idx > -1) {
+        this.newTrainPostIds.splice(idx2,1)
+      }
       this.filteredPosts.push(this.hiddenPosts[postIdx])
       this.hiddenPosts.splice(postIdx, 1)
+      this.storeMutedPostIds()
+      this.storeNewTrainPostIds()
     },
     model2OutDated() {
-      this.modelStatus.model2.upTodate = false
+      // this.modelStatus.model2.upToDate = false
+      this.updateModelStatusValue('model2', 'upToDate', false)
     }
     // showHidden () {
 

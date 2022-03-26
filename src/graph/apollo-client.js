@@ -12,7 +12,7 @@ var httpLink = new core_1.HttpLink({
 // example how you can pass in the x-access-token into requests using `ApolloLink`
 var authLink = new core_1.ApolloLink(function (operation, forward) {
     var token = (0, state_1.getAuthenticationToken)();
-    console.log('jwt token:', token);
+    // console.log('jwt token:', token);
     // Use the setContext method to set the HTTP headers.
     operation.setContext({
         headers: {

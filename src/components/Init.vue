@@ -7,10 +7,6 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../graph/apollo-client';
 // import { prettyJSON } from '../graph/helpers';
-require('@tensorflow/tfjs');
-import * as tf from '@tensorflow/tfjs';
-// const use = require('@tensorflow-models/universal-sentence-encoder');
-
 // Fake data for testing purpose
 import json from '../store/sample-publications.json'
 import { mapGetters } from 'vuex'
@@ -931,15 +927,15 @@ export default {
     ])
   },
   watch: {
-    modelStatus () {
-      console.log('modelStatus changed!')
-      // console.log(newModelStatus, oldModelStatus)
-    },
+    // modelStatus (newModelStatus, oldModelStatus) {
+    //   console.log('modelStatus changed!')
+    //   console.log(newModelStatus, oldModelStatus)
+    // },
     trainDataIds (newTrainDataIds) {
       // console.log('trainDataIds changed!', newTrainDataIds)
       // console.log(this.modelStatus.model2.active, this.modelStatus.model2.upToDate)
-      if (this.modelStatus.model2.active && !this.modelStatus.model2.upToDate) {
-        this.getPublicationsByPublicationIds (newTrainDataIds)
+      if ((this.modelStatus.model2.active && !this.modelStatus.model2.upToDate)||this.modelStatus.model2.training) {
+        this.getPublicationsByPublicationIds(newTrainDataIds)
       } else {
         console.log('no data changed, will not trigger publication download')
       }
@@ -958,6 +954,9 @@ export default {
     },
     async updateTrainRaw(posts) {
       await this.$store.dispatch('updateTrainRaw', posts)
+    },
+    async updateModelStatus(modelStatus) {
+      await this.$store.dispatch('updateModelStatus', modelStatus)
     },
     async dataExtraction() {
       await this.$store.dispatch('dataExtraction')
@@ -1004,21 +1003,8 @@ export default {
     // }
   },
   mounted () {
-    // Tensorflow.js Playground
-    const a = tf.tensor([1,2,3,4])
-    // const d = tf.tensor([2,3,4,5])
-    a.print()
-
-    // console.log(a.shape)
-    // const b = a.reshape([2,2])
-    // b.print()
-    // b.array().then(function(data){
-    //   console.log(data)
-    //   return data
-    // })
-    // const c = tf.losses.cosineDistance(d, d)
-    // c.print()
-
+    
+  
     // console.log(use.loadTokenizer())
     // const r = use.loadTokenizer().then(tokenizer => {
     //   tokenizer.encode('Hello, how are you?'); // [341, 4125, 8, 140, 31, 19, 54]
@@ -1063,14 +1049,16 @@ export default {
     // const that = this
     let that = this
     this.getPublicationsRequest2({
-      profileId: "0x53", // id that works: [53, 13, 60, ]
+      profileId: "0x13", // id that works: [53, 13, 60, ]
       publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
-      limit: 50 // cannot exceed the maximum limit
+      limit: 10 // cannot exceed the maximum limit
     }).then((result)=>{
-      console.log(result)
-      // that.updatePosts(result.data.publications.items)
-      that.updatePosts(that.myJson)
-      
+      let data = result.data.publications.items
+      let newData = data.map((item) => 
+        Object.assign({}, item, {'reasons': []}, {'recScore': 1})
+      )
+      that.updatePosts(newData)
+      // that.updatePosts(that.myJson)
     })
     
 

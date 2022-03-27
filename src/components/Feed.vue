@@ -205,16 +205,17 @@ export default {
                 // assign variables
                 let that = this
                 let modelName = this.modelStatus.model1.name
-                const threshold = 0.9;
+                const threshold = 0.93;
                 toxicity.load(threshold).then(model => {
                     model.classify(that.postCts).then(predictions => {
+                        console.log(predictions)
                         // update the postDisplayAttr
                         predictions.forEach((prediction)=>{
                             // console.log(prediction.results.length)
                             let submodule = prediction.label
                             prediction.results.forEach((predictedValue, i)=>{
                                 // console.log(predictedValue, i)
-                                if (predictedValue.match){
+                                if (predictedValue.match != false){
                                     that.modelStatus.model1.displayAttr[i].show = false
                                     that.modelStatus.model1.displayAttr[i].reasons.push(submodule)
                                 }

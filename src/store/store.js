@@ -7,7 +7,7 @@ const store = createStore({
     error: null,
     posts: [],
     muteErrInfo: 'You hide this publication.',
-    defaultAvatar: 'https://ipfs.infura.io/ipfs/Qma8mXoeorvPqodDazf7xqARoFD394s1njkze7q1X4CK8U',
+    defaultAvatar: 'https://clutch-datascience.s3.us-east-2.amazonaws.com/assets/temp-img/avatar.jpeg',
     
     // data pipeline
     postsCtt: [],

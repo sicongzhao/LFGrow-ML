@@ -124,6 +124,7 @@ const GET_PUBLICATIONS = `
       traitType
       value
     }
+    image
   }
 
   fragment Erc20Fields on Erc20 {
@@ -1047,18 +1048,31 @@ export default {
     //   console.log(result)
     // })
     // const that = this
+
     let that = this
+    // this.getPublicationsRequest2({
+    //   profileId: "0x03aa", // id that works: [53, 13, 60, 0x0396, 0x03aa]
+    //   publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
+    //   limit: 6 // cannot exceed the maximum limit
+    // }).then((result)=>{
+    //   console.log(result)
+    //   let data = result.data.publications.items
+    //   let newData = data.map((item) => 
+    //     Object.assign({}, item, {'reasons': []}, {'recScore': 1})
+    //   )
+    //   that.updatePosts(newData)
+    //   // that.updatePosts(that.myJson)
+    // })
+
     this.getPublicationsRequest2({
-      profileId: "0x13", // id that works: [53, 13, 60, ]
-      publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
-      limit: 10 // cannot exceed the maximum limit
+      publicationIds: ['0x03aa-0x01','0x53-0x03','0x03aa-0x02','0x53-0x01','0x03aa-0x03','0x03aa-0x06','0x0396-0x02','0x53-0x04'], // id that works: [53, 13, 60, ]
     }).then((result)=>{
+      console.log(result.data.publications.items)
       let data = result.data.publications.items
       let newData = data.map((item) => 
         Object.assign({}, item, {'reasons': []}, {'recScore': 1})
       )
       that.updatePosts(newData)
-      // that.updatePosts(that.myJson)
     })
     
 

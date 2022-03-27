@@ -3,7 +3,8 @@
       <div class="flex-none flex flex-col w-16">
           <div class="w-full h-4" v-if="post.__typename=='Mirror'"></div>
           <div class="w-12 h-12 mx-auto mt-1">
-            <img :src="post.profile.picture.original.url" alt="" class="w-12 h-12 rounded-full object-cover" @error="$event.target.src = defaultAvatar">
+            <img :src="post.profile.picture.original.url" alt="" class="w-12 h-12 rounded-full object-cover" @error="$event.target.src = defaultAvatar" v-if="post.profile.picture !== null && post.profile.picture.hasOwnProperty('original')">
+            <img :src="defaultAvatar" alt="" class="w-12 h-12 rounded-full object-cover" v-else>
           </div>
       </div>
       <div class="flex-auto flex flex-col">
@@ -62,7 +63,8 @@
             <div class="break-words font-medium pr-10">{{post.metadata.content}}</div>
             <div class="flex w-11/12 rounded-xl border-solid border-2 border-gray-50 bg-gray-50 mt-3 p-2" v-if="post.__typename=='Comment'">
               <div class="flex-none w-5 h-5 mr-2 mt-1 ml-1 mb-1">
-                <img :src="post.mainPost.profile.picture.original.url" alt="" class="w-5 h-5 rounded-full object-cover" @error="$event.target.src = defaultAvatar">
+                <img :src="post.mainPost.profile.picture.original.url" alt="" class="w-5 h-5 rounded-full object-cover" @error="$event.target.src = defaultAvatar" v-if="post.mainPost.profile.picture !== null && post.mainPost.profile.picture.hasOwnProperty('original')">
+                <img :src="defaultAvatar" alt="" class="w-5 h-5 rounded-full object-cover" v-else>
               </div>
               <div class="flex-auto flex flex-col">
                 <div class="h-6 flex justify-left items-end">
@@ -113,7 +115,8 @@
       <div class="flex-none flex flex-col w-16">
           <div class="w-full h-4" v-if="post.__typename=='Mirror'"></div>
           <div class="w-12 h-12 mx-auto mt-1">
-            <img :src="post.profile.picture.original.url" alt="" class="w-12 h-12 rounded-full object-cover" @error="$event.target.src = defaultAvatar">
+            <img :src="post.profile.picture.original.url" alt="" class="w-12 h-12 rounded-full object-cover" @error="$event.target.src = defaultAvatar" v-if="post.profile.picture !== null && post.profile.picture.hasOwnProperty('original')">
+            <img :src="defaultAvatar" alt="" class="w-12 h-12 rounded-full object-cover" v-else>
           </div>
       </div>
       <div class="flex-auto flex flex-col">
@@ -170,7 +173,8 @@
             <div class="break-words font-medium pr-10">{{post.metadata.content}}</div>
             <div class="flex w-11/12 rounded-xl border-solid border-2 border-gray-300 bg-gray-300 mt-3 mb-2 p-2" v-if="post.__typename=='Comment'">
               <div class="flex-none w-5 h-5 mr-2 mt-1 ml-1 mb-1">
-                <img :src="post.mainPost.profile.picture.original.url" alt="" class="w-5 h-5 rounded-full object-cover" @error="$event.target.src = defaultAvatar">
+                <img :src="post.mainPost.profile.picture.original.url" alt="" class="w-5 h-5 rounded-full object-cover" @error="$event.target.src = defaultAvatar" v-if="post.mainPost.profile.picture !== null && post.mainPost.profile.picture.hasOwnProperty('original')">
+                <img :src="defaultAvatar" alt="" class="w-5 h-5 rounded-full object-cover" v-else>
               </div>
               <div class="flex-auto flex flex-col">
                 <div class="h-6 flex justify-left items-end">

@@ -9,6 +9,9 @@ module.exports = {
       colors: {
         'theme-color-1': '#E96F90',
         'theme-color-2': '#E5CA00',
+        'sec-color-1': '#5CA9FF',
+        'sec-color-2': '#5483FF',
+        'sec-color-3': '#4C5CFF'
       }
     },
   },

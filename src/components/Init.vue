@@ -991,71 +991,19 @@ export default {
       this.getPublicationsRequest2({
         publicationIds: publicationIds, // id that works: [53, 13, 60, ]
       }).then((result)=>{
-        console.log(result.data.publications.items)
+        // console.log(result.data.publications.items)
         that.updateTrainRaw(result.data.publications.items)
       })
     }
-    // async removePosts(postIds=[]) {
-    //   if (postIds.length == 0) {
-    //     this.updateFilteredPosts(this.posts)
-    //   } else {
-    //     console.log(66)
-    //   }
-    // }
   },
   mounted () {
-    
-  
-    // console.log(use.loadTokenizer())
-    // const r = use.loadTokenizer().then(tokenizer => {
-    //   tokenizer.encode('Hello, how are you?'); // [341, 4125, 8, 140, 31, 19, 54]
-    // });
-    // console.log(r)
-    // r.then(function(result){
-    //   console.log(result)
-    // })
-
-    // // Sentence Encoder
-    // use.load().then(model => {
-    //   // Embed an array of sentences.
-    //   const sentences = [
-    //     'Hello nice to meet you.',
-    //     'How are you?'
-    //   ];
-    //   model.embed(sentences).then(embeddings => {
-    //     // `embeddings` is a 2D tensor consisting of the 512-dimensional embeddings for each sentence.
-    //     // So in this example `embeddings` has the shape [2, 512].
-    //     embeddings.print(true /* verbose */);
-    //     // console.log(embeddings.arraySync())
-    //     const a = embeddings.arraySync()
-    //     console.log(a)
-    //   });
-    // });
-
-    // const res = this.getPublicationsRequest({
-    //   profileId: '0x032f1a',
-    //   publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
-    // })
-    // res.then(function(result) {
-    //   console.log(result)
-    // })
-
-    // const res2 = this.explorePublications({
-    //   sortCriteria: 'TOP_COMMENTED',
-    //   limit: 10,
-    // })
-    // res2.then(function(result){
-    //   console.log(result)
-    // })
-    // const that = this
-
     let that = this
     // this.getPublicationsRequest2({
-    //   profileId: "0x03aa", // id that works: [53, 13, 60, 0x0396, 0x03aa]
+    //   profileId: "0x13", // id that works: [53, 13, 60, 0x0396, 0x03aa]
     //   publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
-    //   limit: 6 // cannot exceed the maximum limit
+    //   limit: 50 // cannot exceed the maximum limit
     // }).then((result)=>{
-    //   console.log(result)
+    //   console.log(result.data.publications.items)
     //   let data = result.data.publications.items
     //   let newData = data.map((item) => 
     //     Object.assign({}, item, {'reasons': []}, {'recScore': 1})
@@ -1065,9 +1013,9 @@ export default {
     // })
 
     this.getPublicationsRequest2({
-      publicationIds: ['0x03aa-0x01','0x53-0x03','0x03aa-0x02','0x53-0x01','0x03aa-0x03','0x03aa-0x06','0x0396-0x02','0x53-0x04'], // id that works: [53, 13, 60, ]
+      publicationIds: ['0x03aa-0x01','0x53-0x03','0x13-0x5f','0x13-0x5e','0x13-0x54','0x03aa-0x02','0x53-0x01','0x03aa-0x03','0x03aa-0x06','0x0396-0x02','0x53-0x04'], // id that works: [53, 13, 60, ]
     }).then((result)=>{
-      console.log(result.data.publications.items)
+      // console.log(result.data.publications.items)
       let data = result.data.publications.items
       let newData = data.map((item) => 
         Object.assign({}, item, {'reasons': []}, {'recScore': 1})
@@ -1076,7 +1024,6 @@ export default {
     })
     
 
-    // that.updatePosts(this.myJson) // for testing purpose, should remove
   }
 
 }

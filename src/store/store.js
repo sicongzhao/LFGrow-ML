@@ -284,7 +284,6 @@ const store = createStore({
         return pda
     },
     async updateView({commit, dispatch}) {
-        console.log('666 updating view')
         let pda = await dispatch('initPostDisplayAttr')
         for (let key in this.state.modelStatus) {
             if (this.state.modelStatus[key].active) {
@@ -322,7 +321,7 @@ const store = createStore({
             } else {
                 if(that.state.mutedPostIds.includes(postElement.id)){
                     if(Array.isArray(pda[i].reasons)){
-                        pda[i].reasons.push(that.state.muteErrInfo)
+                        pda[i].reasons = [that.state.muteErrInfo]
                     } else if (Object.keys(pda[i].reasons).length === 0) {
                         pda[i].reasons = [that.state.muteErrInfo]
                     } else {
@@ -336,7 +335,6 @@ const store = createStore({
         })
         commit('setFilteredPosts', postsShow)
         commit('setHiddenPosts', postsHide)
-        
     },
     async connect({commit, dispatch}, connect) {
       try {

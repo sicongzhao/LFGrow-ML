@@ -19,8 +19,11 @@
               <div class="font-medium text-gray-400">{{post.mirrorOf.createdAt.slice(5,10)}}</div>
               <div class="flex-1"></div>
               <div class="w-6 h-6 rounded-full cursor-pointer relative">
+                <!-- <img @click="unLikePost(post.id)" v-if="likedPostIds.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/liked.svg" alt=""> -->
+                <!-- <img class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/dot.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null"> -->
                 <img @click="unLikePost(post.id)" v-if="likedPostIds.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/liked.svg" alt="">
-                <img class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/dot.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
+                <img v-else-if="post.recScore > 0.51 && modelStatus.model2.active" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/recommend.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
+                <img v-else class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/dot.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
                 <div class="w-24 h-6 absolute rounded-md top-0 right-0" v-show="showByIndex === post.id" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
                   <span class="relative w-24 z-0 h-6 inline-flex shadow-sm rounded-md">
                     <button @click="likePost(post.id)"  type="button" class="relative w-12 inline-flex items-center px-4 py-2 rounded-l-md border border-gray-200 bg-white hover:bg-gray-50">
@@ -47,7 +50,8 @@
               <div class="flex-1"></div>
               <div class="w-6 h-6 rounded-full cursor-pointer relative -top-2">
                 <img @click="unLikePost(post.id)" v-if="likedPostIds.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/liked.svg" alt="">
-                <img v-if="!likedPostIds.includes(post.id)" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/dot.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
+                <img v-else-if="post.recScore > 0.51 && modelStatus.model2.active" class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/recommend.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
+                <img v-else class="mx-auto mt-1 w-4 h-4 fill-current text-blue-500" src="../assets/icons/dot.svg" alt="" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
                 <div class="w-24 h-6 absolute rounded-md top-0 right-0" v-show="showByIndex === post.id" @mouseover="showByIndex = post.id" @mouseout="showByIndex = null">
                   <span class="relative w-24 z-0 h-6 inline-flex shadow-sm rounded-md">
                     <button @click="likePost(post.id)" type="button" class="relative w-12 inline-flex items-center px-4 py-2 rounded-l-md border border-gray-200 bg-white hover:bg-gray-50">
@@ -106,8 +110,8 @@
     <!-- It makes sense to show the hidden posts if users requested.  -->
   </div>
   <div v-if="showHidden">
-  <div class="flex flex-col bg-indigo-900 my-1 rounded-lg shadow-[#106ae0]" v-for="(post, index) in hiddenPosts" :key="post">
-    <div class="h-10 text-white text-xs text-left px-3 flex justify-between items-center">
+  <div class="flex flex-col bg-theme-color-3 my-1 rounded-lg shadow-[#106ae0]" v-for="(post, index) in hiddenPosts" :key="post">
+    <div class="h-8 text-white text-xs text-left px-3 flex justify-between items-center">
       <div>{{post.reasons[0]}}</div>
       <button class="bg-white rounded-sm text-gray-500 text-xs font-bold px-2 h-6" @click="errorCase(index)">Unhide</button>
     </div>
@@ -294,7 +298,7 @@ export default {
       // console.log(this.mutedPostIds)
       // console.log(postId, postIdx)
       if ('reasons' in this.filteredPosts[postIdx] && Array.isArray(this.filteredPosts[postIdx].reasons)){
-        this.filteredPosts[postIdx].reasons.push(this.muteErrInfo)
+        this.filteredPosts[postIdx].reasons = [this.muteErrInfo]
       } else {
         // console.log(666)
         // console.log(this.filteredPosts[postIdx])
@@ -304,7 +308,9 @@ export default {
       this.filteredPosts.splice(postIdx, 1)
     },
     errorCase(postIdx) {
-      alert('This is input and will be used to train the model.')
+      if (this.hiddenPosts[postIdx].reasons != this.muteErrInfo) {
+        alert('This is input and will be used to train the model.')
+      }
       console.log(postIdx)
       console.log(this.hiddenPosts[postIdx].reasons)
       console.log(typeof(this.hiddenPosts[postIdx].reasons))
